@@ -5,12 +5,13 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
+export const revalidate = 60 // Revalidate Cached data at most 60 sec
 
 export const metadata: Metadata = {
   title: "Elios | Generative AI",
   description: "A website for generative AI innovation created by Ahmed Alrufai, in Elios you can use different types of Generative AI like text-to-text, text-to-image, text-to-video, image-classification and more of AI innovation",
   icons: {
-    icon: '/next.svg'
+    icon: '/logo.png'
   }
 };
 
