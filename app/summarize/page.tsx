@@ -5,16 +5,15 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useState } from "react"
-import { hf } from "../image/page"
 
 export default function SumPage(){
     const [sum_text, setContent] = useState('')
     const [userInput, setInput] = useState('')
+    const [loading, setLoading] = useState(false)
     const modelId = 'facebook/bart-large-cnn'
 
     const handleChange = (e : React.ChangeEvent < HTMLInputElement >) => {
         setInput(e.target.value)
-        console.log(e.target.value)
     }
 
     const handleClick = () => {
@@ -22,59 +21,46 @@ export default function SumPage(){
         summarize_model(userInput)
     }
 
-    const showLoader = () => {
-        const spinner = document.getElementById("load")
-        if (spinner) {
-            spinner
-                .classList
-                .remove("hidden")
-        }
-    }
-
-    const hideLoader = () => {
-        const spinner = document.getElementById("load")
-        if (spinner) {
-            spinner
-                .classList
-                .add("hidden")
-        }
-    }
-
     async function summarize_model(input: string) {
         try{
-            showLoader()
-            await hf.summarization({
-                model: `${modelId}`,
-                inputs: `${input}`,
-                parameters: {
-                  max_length: 100
+            setLoading(true)
+            const response = await fetch(
+                "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+                {
+                    headers: { Authorization: `Bearer ${process.env['HF_TOKEN']}`},
+                    method: "POST",
+                    body: JSON.stringify(input),
                 }
-              }).then(summarized_text => {
-                console.log(summarized_text)
-                hideLoader()
-                setContent(summarized_text['summary_text'])
-            })
+            );
+            const result = await response.json();
+            setLoading(false)
+            setContent(result[0].generated_text)
+            return result;
         } catch(err) {
-            console.log(err)
-            hideLoader()
+            setLoading(false)
             setContent("Something Went Wrong !!")
+            return {message: err}
         }
     }
     
 
     return(
         <div>
-        <h2 className="font-bold text-4xl">Chat with {modelId.toUpperCase()}</h2>
+        <h2 className="font-bold text-2xl">Summarize text using {modelId.toUpperCase()}</h2>
     <div className="min-h-screen grid grid-cols-1 gap-4 place-content-center">
-        <Card className="gap-4 p-4">
-            <div className="space-y-2 hidden" id="load">
-                <Skeleton className="h-4 w-full"/>
-                <Skeleton className="h-4 w-[50%]"/>
+        {loading && (
+            <div className="space-y-2" id="load">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-[50%]" />
             </div>
+            )}
+        {sum_text !== "" && sum_text !== null ? (
+            <Card className="gap-4 p-4">
             <p className="text-base">
                 {sum_text}
             </p>
         </Card>
+        ) : null }
         <Card className=' relative flex justify-between'>
             <Input type={"text"} id="input" onChange={handleChange}></Input>
             <Button id="submit-button" onClick={handleClick}>
