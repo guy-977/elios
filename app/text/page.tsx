@@ -43,7 +43,7 @@ export default function ChatPage() {
         }
     }
 
-    console.log(process.env.NEXT_PUBLIC_HF_TOKEN)
+    console.log(process.env.TEST_KEY)
     console.log(process.env.NODE_ENV)
 
     return (
