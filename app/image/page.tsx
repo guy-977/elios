@@ -3,11 +3,8 @@
 import {Button} from '@/components/ui/button'
 import {Card, CardContent} from '@/components/ui/card'
 import {Input} from '@/components/ui/input'
-import {HfInference} from '@huggingface/inference'
 import Image from 'next/image'
 import {useState} from 'react'
-
-export const hf = new HfInference(process.env['HF_TOKEN'])
 
 export default function ImageGen() {
     const [url,
@@ -17,7 +14,6 @@ export default function ImageGen() {
 
     const handleChange = (e : React.ChangeEvent < HTMLInputElement >) => {
         setInput(e.target.value)
-        console.log(e.target.value)
     }
 
     const handleClick = () => {
@@ -32,19 +28,21 @@ export default function ImageGen() {
 
         // ### With huggingface inference API
         try {
-            const genImage = await hf.textToImage({
-                inputs: prompt,
-                model: "stabilityai/stable-diffusion-2-1",
-                parameters: {
-                    negative_prompt: "blurry"
+            const response = await fetch(
+                "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1",
+                {
+                    headers: { Authorization: `Bearer ${process.env['HF_TOKEN']}` },
+                    method: "POST",
+                    body: JSON.stringify({'inputs': prompt}),
                 }
-            });
-            const imageUrl = URL.createObjectURL(genImage);
+            );
+            const result = await response.blob();
+            const imageUrl = URL.createObjectURL(result);
             setURL(imageUrl);
             hideLoadingIndicator();
         } catch (e) {
-            console.log(e);
             hideLoadingIndicator();
+            return {message: e}
         }
     }
 
@@ -72,7 +70,12 @@ export default function ImageGen() {
             <Card>
                 <CardContent
                     className='flex flex-col justify-center items-center content-center gap-3 relative'>
-                    <Image src={url} width={500} height={500} alt="generated image"/>
+                        {url !== "" && url !== null ? (
+                        <Image src={url} width={500} height={500} alt="generated image" />
+                        ) : (
+                        <Image src="/logo.png" width={500} height={500} alt="generated image" />
+                        )}
+
                     <div id="spinner" className="hidden absolute">
                         <div className="spinner-container">
                             <div className="circle"></div>
