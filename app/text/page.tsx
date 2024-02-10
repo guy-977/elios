@@ -43,6 +43,9 @@ export default function ChatPage() {
         }
     }
 
+    console.log(process.env.HF_TOKEN)
+    console.log(process.env.NODE_ENV)
+
     return (
         <div>
             <h2 className="font-bold text-2xl">Generate text with {modelId.toUpperCase()}</h2>
