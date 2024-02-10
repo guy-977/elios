@@ -27,7 +27,7 @@ export default function ChatPage() {
             const response = await fetch(
                 "https://api-inference.huggingface.co/models/openai-community/gpt2",
                 {
-                    headers: { Authorization: "Bearer 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" },
+                    headers: { Authorization: `Bearer ${process.env['HF_TOKEN']}` },
                     method: "POST",
                     body: JSON.stringify({"inputs": input}),
                 }
