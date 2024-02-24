@@ -25,16 +25,16 @@ export default function ChatPage() {
         try {
             setLoading(true)
             const response = await fetch(
-                "https://api-inference.huggingface.co/models/openai-community/gpt2",
+                "/api/text-gen",
                 {
-                    headers: { Authorization: `Bearer ${process.env.HF_TOKEN}` },
+                    headers: {"Content-type": "application/json"},
                     method: "POST",
-                    body: JSON.stringify({"inputs": input}),
+                    body: JSON.stringify({'prompt': input}),
                 }
-            );
+            )
             const result = await response.json();
             setLoading(false)
-            setContent(result[0].generated_text)
+            setContent(result.generated_text)
 
         } catch (e) {
             setLoading(false)
@@ -42,9 +42,6 @@ export default function ChatPage() {
             return {message: e}
         }
     }
-
-    console.log(process.env['TEST_KEY'])
-    console.log(process.env.NODE_ENV)
 
     return (
         <div>

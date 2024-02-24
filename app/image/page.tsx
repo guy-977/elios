@@ -29,15 +29,17 @@ export default function ImageGen() {
         // ### With huggingface inference API
         try {
             const response = await fetch(
-                "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1",
+                "/api/image",
                 {
-                    headers: { Authorization: `Bearer ${process.env['HF_TOKEN']}` },
+                    headers: {"Content-Type": "image/png"},
                     method: "POST",
-                    body: JSON.stringify({'inputs': prompt}),
+                    body: JSON.stringify({'prompt': prompt}),
                 }
             );
             const result = await response.blob();
+            console.log(result)
             const imageUrl = URL.createObjectURL(result);
+            console.log(imageUrl)
             setURL(imageUrl);
             hideLoadingIndicator();
         } catch (e) {

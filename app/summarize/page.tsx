@@ -25,21 +25,21 @@ export default function SumPage(){
         try{
             setLoading(true)
             const response = await fetch(
-                "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+                "/api/summarize",
                 {
-                    headers: { Authorization: `Bearer ${process.env['HF_TOKEN']}`},
+                    headers: { "Content-type": "application/json"},
                     method: "POST",
-                    body: JSON.stringify(input),
+                    body: JSON.stringify({'prompt': input}),
                 }
             );
             const result = await response.json();
             setLoading(false)
-            setContent(result[0].generated_text)
+            setContent(result.summary_text)
             return result;
         } catch(err) {
             setLoading(false)
             setContent("Something Went Wrong !!")
-            return {message: err}
+            console.log(err)
         }
     }
     
