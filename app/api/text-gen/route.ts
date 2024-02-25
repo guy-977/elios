@@ -1,23 +1,3 @@
-// try {
-//     setLoading(true)
-//     const response = await fetch(
-//         "https://api-inference.huggingface.co/models/openai-community/gpt2",
-//         {
-//             headers: { Authorization: `Bearer ${HF_TOKEN}` },
-//             method: "POST",
-//             body: JSON.stringify({"inputs": input}),
-//         }
-//     );
-//     const result = await response.json();
-//     setLoading(false)
-//     setContent(result[0].generated_text)
-
-// } catch (e) {
-//     setLoading(false)
-//     setContent("Something Went Wrong!!!!")
-//     return {message: e}
-// }
-
 const token = process.env.HF_TOKEN;
 
 export async function POST(request: Request){
