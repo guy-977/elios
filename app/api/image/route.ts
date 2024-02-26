@@ -3,7 +3,6 @@ const token = process.env.HF_TOKEN;
 export async function POST(request: Request){
     const requestBody = await request.json()
     const prompt = requestBody.prompt
-    let image;
 
     try {
     const response = await fetch(
