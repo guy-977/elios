@@ -9,7 +9,7 @@ interface HomeCardProps {
 
 export default function HomeCard(props : HomeCardProps) {
     return (
-        <Card className="p-4 min-w-full">
+        <Card className="p-4 min-w-full" data-aos="zoom-in">
             <CardContent
                 className="flex flex-col justify-center items-center content-center gap-4 min-w-8 relative">
                 <h3>{props.title !== undefined
@@ -19,7 +19,7 @@ export default function HomeCard(props : HomeCardProps) {
                     href={props.href !== undefined
                     ? props.href
                     : " "}>
-                    <Button>Try it</Button>
+                    <Button className="bg-blue-500">Try it</Button>
                 </Link>
             </CardContent>
         </Card>

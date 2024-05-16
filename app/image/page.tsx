@@ -68,7 +68,7 @@ export default function ImageGen() {
         }
     }
     return (
-        <div>
+        <div className='flex flex-col gap-4'>
             <Card>
                 <CardContent
                     className='flex flex-col justify-center items-center content-center gap-3 relative'>
@@ -91,6 +91,10 @@ export default function ImageGen() {
                     Generate
                 </Button>
             </Card>
+            {url ? (
+                <Card className='flex justify-center border-none'>
+                    <Button>Download</Button>
+                </Card>) : null}
         </div>
     );
 }

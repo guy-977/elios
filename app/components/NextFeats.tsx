@@ -8,13 +8,13 @@ interface NextFeatsProps {
 
 export default function NextFeats(props : NextFeatsProps) {
     return (
-        <Card className="p-4 min-w-full">
+        <Card className="p-4 min-w-full" data-aos="zoom-in">
             <CardContent
                 className="flex flex-col justify-center items-center content-center gap-4 min-w-8 relative">
                 <h3>{props.title !== undefined
                         ? props.title
                         : " "}</h3>
-                <Button>
+                <Button className="bg-blue-500">
                     <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
                     Coming Soon!
                 </Button>
