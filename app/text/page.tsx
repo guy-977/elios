@@ -10,7 +10,7 @@ export default function ChatPage() {
     const [gen_text, setContent] = useState('')
     const [userInput, setInput] = useState('')
     const [loading, setLoading] = useState(false)
-    const modelId: string = 'gpt2'
+    const modelId: string = 'mixtral-8x7b'
 
     const handleChange = (e : React.ChangeEvent < HTMLInputElement >) => {
         setInput(e.target.value)
